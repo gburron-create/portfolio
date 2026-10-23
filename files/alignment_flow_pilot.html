@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Alignment Flow: Legislation &#8594; ARG &#8594; Program Expectations &#8594; CTL7002 Learning Outcomes</title>
+<style>
+  :root{
+    --navy:#1c2f4a; --navy2:#2c4468; --gold:#b8860b; --gold-light:#f4e6c8;
+    --leg:#378ADD; --arg:#1D9E75; --pe:#D85A30; --lo:#7F77DD;
+    --bg:#faf9f6; --card:#ffffff; --line:#e2ddd2; --muted:#6b7280; --text:#26262b;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0 0 60px;}
+  header{background:var(--navy);color:#fff;padding:28px 40px 22px;}
+  header h1{margin:0 0 4px;font-size:1.4rem;font-weight:600;}
+  header p{margin:0;color:#c9d2e0;font-size:.9rem;max-width:960px;line-height:1.5;}
+  main{max-width:1280px;margin:0 auto;padding:26px 40px;}
+  .view-note{background:var(--gold-light);border-left:3px solid var(--gold);padding:10px 16px;font-size:.82rem;color:#5a4a1e;margin-bottom:20px;border-radius:0 4px 4px 0;}
+  .legend{display:flex;gap:22px;font-size:.78rem;color:var(--muted);margin-bottom:14px;flex-wrap:wrap;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+  .filter{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  .filter input{flex:1;max-width:420px;padding:8px 12px;font-size:.85rem;border:1px solid var(--line);border-radius:6px;background:#fff;}
+  .filter input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+
+  .flow-cols{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;position:relative;}
+  .flow-col h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 12px;}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:.76rem;line-height:1.35;cursor:pointer;transition:box-shadow .15s, opacity .15s;position:relative;}
+  .node:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .node.leg{border-left:3px solid var(--leg);}
+  .node.arg{border-left:3px solid var(--arg);}
+  .node.pe{border-left:3px solid var(--pe);}
+  .node.lo{border-left:3px solid var(--lo);}
+  .node .tag{font-size:.66rem;font-weight:700;color:var(--muted);display:block;margin-bottom:3px;letter-spacing:.03em;}
+  .node.dim{opacity:.22;}
+  .node.hi{box-shadow:0 0 0 2px var(--gold);}
+  svg.links{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+  svg.links path{fill:none;stroke:#c7c0ae;stroke-width:1.2;opacity:.4;}
+  svg.links path.strong{stroke-width:1.8;opacity:.6;}
+  svg.links path.dim{opacity:.04;}
+  svg.links path.hi{stroke:var(--gold);opacity:1;stroke-width:2.4;}
+  svg.links path.unintended{stroke-dasharray:3,2;}
+  .flow-wrap{position:relative;}
+
+  footer{max-width:1280px;margin:30px auto 0;padding:0 40px;font-size:.75rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Alignment Flow &#8212; Legislation &#8594; ARG section &#8594; OISE Program Expectation &#8594; CTL7002 Learning Outcome</h1>
+  <p>Full data set: 18 Schedule 1 elements, 21 ARG sections (collapsed from 131 individual bullets to section level for readability), all 23 OISE Program Expectations, and all 26 CTL7002 (C&amp;T Mathematics) learning outcomes/topics. Hover any box to trace its full chain in both directions; dashed lines mark "unintended" PE matches &#8212; program expectations the course content touches without being on its official assigned list.</p>
+</header>
+
+<main>
+  <div class="view-note">This is the course-independent ARG&#8596;PE base layer plus the CTL7002 pilot test, rendered in the "Alignment Flow" style from the original format mockup. Bullet-level detail and full verbatim text live in the companion spreadsheet and accordion view.</div>
+
+  <div class="filter">
+    <input type="text" id="q" placeholder="Filter to trace a law element, ARG section, PE, or LO...">
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--leg)"></span>Legislation (O. Reg. 347/02, Sched. 1)</span>
+    <span><span class="dot" style="background:var(--arg)"></span>ARG section</span>
+    <span><span class="dot" style="background:var(--pe)"></span>OISE program expectation</span>
+    <span><span class="dot" style="background:var(--lo)"></span>CTL7002 course LO</span>
+  </div>
+
+  <div class="flow-wrap">
+    <svg class="links" id="svglinks"></svg>
+    <div class="flow-cols">
+      <div class="flow-col"><h3>Legislation</h3><div id="col-law"></div></div>
+      <div class="flow-col"><h3>ARG section</h3><div id="col-arg"></div></div>
+      <div class="flow-col"><h3>Program expectation</h3><div id="col-pe"></div></div>
+      <div class="flow-col"><h3>CTL7002 course LO</h3><div id="col-lo"></div></div>
+    </div>
+  </div>
+</main>
+
+<footer>Sources: O. Reg. 347/02 Schedule 1; Ontario Accreditation Resource Guide (EN, WEB); OISE MT Program Expectations (PEs August 2025.docx); CTL7002 "C&amp;T Mathematics" course learning outcomes (weekly topic labels from the Scope &amp; Sequence table, per the course-documentation project's corrections log). ARG&#8594;PE matching is content-based, not citation-based &#8212; the ARG does not name PEs directly. Generated as a test pass of the Legislation&#8594;ARG&#8594;PE&#8594;Course LO alignment chain.</footer>
+
+<script>
+const D = {"laws":{"law:CK-CK 1":{"cat":"CK","elem":"CK 1"},"law:TCK-TCK 4":{"cat":"TCK","elem":"TCK 4"},"law:CK-CK 2":{"cat":"CK","elem":"CK 2"},"law:PISK-PISK 1":{"cat":"PISK","elem":"PISK 1"},"law:PISK-PISK 2":{"cat":"PISK","elem":"PISK 2"},"law:PISK-PISK 3":{"cat":"PISK","elem":"PISK 3"},"law:PISK-PISK 4":{"cat":"PISK","elem":"PISK 4"},"law:PISK-PISK 5":{"cat":"PISK","elem":"PISK 5"},"law:PISK-PISK 6":{"cat":"PISK","elem":"PISK 6"},"law:TCK-TCK 3":{"cat":"TCK","elem":"TCK 3"},"law:PISK-PISK 7":{"cat":"PISK","elem":"PISK 7"},"law:PISK-PISK 8":{"cat":"PISK","elem":"PISK 8"},"law:PISK-PISK 9":{"cat":"PISK","elem":"PISK 9"},"law:PISK-PISK 10":{"cat":"PISK","elem":"PISK 10"},"law:TCK-TCK 1":{"cat":"TCK","elem":"TCK 1"},"law:TCK-TCK 2":{"cat":"TCK","elem":"TCK 2"},"law:TCK-TCK 5":{"cat":"TCK","elem":"TCK 5"},"law:TCK-TCK 6":{"cat":"TCK","elem":"TCK 6"}},
+"args":{"arg:The Ontario Curriculum":{"sec":"The Ontario Curriculum","pages":["9"]},"arg:Politique d’aménagement linguistique (PAL) de l’Ontario":{"sec":"Politique d’aménagement linguistique (PAL) de l’Ontario","pages":["12"]},"arg:Use of Educational Research and Data Analysis":{"sec":"Use of Educational Research and Data Analysis","pages":["14"]},"arg:Use of Information and Communication Technology as a Teaching and Learning Tool":{"sec":"Use of Information and Communication Technology as a Teaching and Learning Tool","pages":["16"]},"arg:Inquiry-based Research, Data and Assessment to Address Student Learning":{"sec":"Inquiry-based Research, Data and Assessment to Address Student Learning","pages":["19"]},"arg:Theories of Learning and Teaching and Differentiated Instruction":{"sec":"Theories of Learning and Teaching and Differentiated Instruction","pages":["21"]},"arg:Learning Environment and Organization":{"sec":"Learning Environment and Organization","pages":["23"]},"arg:Child and Adolescent Development and Student Transitions":{"sec":"Child and Adolescent Development and Student Transitions","pages":["26"]},"arg:Student Observation, Assessment and Evaluation":{"sec":"Student Observation, Assessment and Evaluation","pages":["29"]},"arg:Supporting English-Language Learners":{"sec":"Supporting English-Language Learners","pages":["31"]},"arg:Supporting French-Language Learners":{"sec":"Supporting French-Language Learners","pages":["33"]},"arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas":{"sec":"Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","pages":["35"]},"arg:Supporting Students with Special Education Needs":{"sec":"Supporting Students with Special Education Needs","pages":["37"]},"arg:Mental Health, Well-being and Belonging":{"sec":"Mental Health, Well-being and Belonging","pages":["40"]},"arg:Standards of Practice, Ethical Standards and Education Law":{"sec":"Standards of Practice, Ethical Standards and Education Law","pages":["43"]},"arg:Knowledge of the Ontario Context":{"sec":"Knowledge of the Ontario Context","pages":["45"]},"arg:Indigenous Perspectives, Cultures, Histories and Ways of Knowing":{"sec":"Indigenous Perspectives, Cultures, Histories and Ways of Knowing","pages":["47"]},"arg:Environmental Learning, Ecojustice and Climate Action":{"sec":"Environmental Learning, Ecojustice and Climate Action","pages":["49"]},"arg:Safe and Accepting Schools/Creation of a Positive School Climate":{"sec":"Safe and Accepting Schools/Creation of a Positive School Climate","pages":["52"]},"arg:Professional Relationships with Colleagues":{"sec":"Professional Relationships with Colleagues","pages":["55"]},"arg:Parent/Guardian Engagement and Communication":{"sec":"Parent/Guardian Engagement and Communication","pages":["57"]}},
+"pes":{"pe:PE1":{"pe":"PE1","peText":"Demonstrate an understanding of the Ontario curriculum and relevant provincial policy documents"},"pe:PE20":{"pe":"PE20","peText":"Demonstrate effective communication with students, colleagues, families, and community members for academic and professional purposes"},"pe:PE17":{"pe":"PE17","peText":"Demonstrate pedagogies and actions that support well-being, equity, social justice, cultural responsiveness and environmental sustainability"},"pe:PE2":{"pe":"PE2","peText":"Demonstrate an understanding of relevant curricular subject matter"},"pe:PE4":{"pe":"PE4","peText":"Demonstrate an understanding of pedagogical and instructional strategies grounded in educational research"},"pe:PE7":{"pe":"PE7","peText":"Critically access, evaluate and synthesize educational research"},"pe:PE10":{"pe":"PE10","peText":"Demonstrate commitment to self-directed learning about teaching and educational research"},"pe:PE14":{"pe":"PE14","peText":"Enact teaching practices and assessment strategies informed by educational theories"},"pe:PE8":{"pe":"PE8","peText":"Engage in data collection, analysis and the mobilization of research"},"pe:PE9":{"pe":"PE9","peText":"Adopt an inquiry-oriented stance grounded in research and evidence-based practice"},"pe:PE16":{"pe":"PE16","peText":"Demonstrate critical reflection on one's teaching to inform pedagogical decision-making"},"pe:PE22":{"pe":"PE22","peText":"Demonstrate meaningful collaboration as members of a professional and social community"},"pe:PE15":{"pe":"PE15","peText":"Make informed pedagogical decisions regarding the use or non-use of digital technology"},"pe:PE21":{"pe":"PE21","peText":"Intentionally select and use technologies to foster and strengthen communication"},"pe:PE18":{"pe":"PE18","peText":"Understand systemic and institutional practices that impact learners; address inequities"},"pe:PE11":{"pe":"PE11","peText":"Recognize and investigate their own social locations, biases and predispositions"},"pe:PE12":{"pe":"PE12","peText":"Understand that teaching requires engagement with perspectives of local and global communities"},"pe:PE5":{"pe":"PE5","peText":"Demonstrate an understanding of equity as a fundamental principle for teaching and learning"},"pe:PE13":{"pe":"PE13","peText":"Demonstrate an understanding of land-based perspectives and human-earth relationships"},"pe:PE6":{"pe":"PE6","peText":"Demonstrate an understanding of a teacher's legal and ethical duties and obligations"},"pe:PE3":{"pe":"PE3","peText":"Demonstrate an understanding of policy documents related to Indigenous education"},"pe:PE23":{"pe":"PE23","peText":"Develop skills for facilitating respectful discussion of controversial issues"},"pe:PE19":{"pe":"PE19","peText":"Demonstrate intellectual humility by recognizing that opinions are not informed knowledge"}},
+"los":{"lo:1":{"lon":"1","lo":"Becoming a teacher of math."},"lo:2":{"lon":"2","lo":"Dispositions in/towards Mathematics."},"lo:3":{"lon":"3","lo":"Doing mathematics (constructivism and inquiry)."},"lo:4":{"lon":"4","lo":"Equity and access in mathematics."},"lo:5":{"lon":"5","lo":"Number Sense and Applications."},"lo:6":{"lon":"6","lo":"Place-based mathematics education."},"lo:7":{"lon":"7","lo":"Developing rich, contextual problems."},"lo:8":{"lon":"8","lo":"\"Seeing\" mathematics."},"lo:9":{"lon":"9","lo":"Mathematical Argumentation & Communication."},"lo:10":{"lon":"10","lo":"Fractions & Decimals."},"lo:11":{"lon":"11","lo":"Microteaching & Classroom observations."},"lo:12":{"lon":"12","lo":"Assessment & evaluation in Ontario (mathematics)."},"lo:13":{"lon":"13","lo":"Assessment & evaluation for teacher liberation."},"lo:14":{"lon":"14","lo":"Proportional thinking; manipulatives; SEL; humanizing math."},"lo:15":{"lon":"15","lo":"Argumentation in mathematics."},"lo:16":{"lon":"16","lo":"Developing a disposition to support mathematics for all."},"lo:17":{"lon":"17","lo":"Supporting multilingual learners in mathematics."},"lo:18":{"lon":"18","lo":"Problem solving and coding."},"lo:19":{"lon":"19","lo":"Cooperative learning and mathematics for social good."},"lo:20":{"lon":"20","lo":"Financial numeracy."},"lo:21":{"lon":"21","lo":"\"Word problems\"."},"lo:22":{"lon":"22","lo":"Patterning and algebra."},"lo:23":{"lon":"23","lo":"Bridging middle to secondary mathematics."},"lo:24":{"lon":"24","lo":"The arts and mathematics."},"lo:25":{"lon":"25","lo":"Patterning and algebra."},"lo:26":{"lon":"26","lo":"Mathematics for joy, love."}},
+"eLA":[["law:CK-CK 1","arg:The Ontario Curriculum","High"],["law:TCK-TCK 4","arg:Politique d’aménagement linguistique (PAL) de l’Ontario","High"],["law:CK-CK 2","arg:Use of Educational Research and Data Analysis","High"],["law:PISK-PISK 1","arg:Use of Educational Research and Data Analysis","High"],["law:PISK-PISK 2","arg:Use of Information and Communication Technology as a Teaching and Learning Tool","High"],["law:PISK-PISK 3","arg:Inquiry-based Research, Data and Assessment to Address Student Learning","High"],["law:PISK-PISK 4","arg:Theories of Learning and Teaching and Differentiated Instruction","High"],["law:PISK-PISK 5","arg:Learning Environment and Organization","High"],["law:PISK-PISK 6","arg:Child and Adolescent Development and Student Transitions","High"],["law:TCK-TCK 3","arg:Child and Adolescent Development and Student Transitions","High"],["law:PISK-PISK 7","arg:Student Observation, Assessment and Evaluation","High"],["law:PISK-PISK 8","arg:Supporting English-Language Learners","High"],["law:PISK-PISK 8","arg:Supporting French-Language Learners","High"],["law:PISK-PISK 9","arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","High"],["law:PISK-PISK 10","arg:Supporting Students with Special Education Needs","High"],["law:TCK-TCK 1","arg:Mental Health, Well-being and Belonging","High"],["law:TCK-TCK 2","arg:Standards of Practice, Ethical Standards and Education Law","High"],["law:TCK-TCK 5","arg:Standards of Practice, Ethical Standards and Education Law","High"],["law:TCK-TCK 4","arg:Knowledge of the Ontario Context","High"],["law:TCK-TCK 4","arg:Indigenous Perspectives, Cultures, Histories and Ways of Knowing","High"],["law:TCK-TCK 4","arg:Environmental Learning, Ecojustice and Climate Action","High"],["law:TCK-TCK 4","arg:Safe and Accepting Schools/Creation of a Positive School Climate","High"],["law:TCK-TCK 6","arg:Professional Relationships with Colleagues","High"],["law:TCK-TCK 6","arg:Parent/Guardian Engagement and Communication","High"]],
+"eAP":[["arg:The Ontario Curriculum","pe:PE1","High"],["arg:The Ontario Curriculum","pe:PE20","Medium"],["arg:The Ontario Curriculum","pe:PE17","Medium"],["arg:The Ontario Curriculum","pe:PE2","High"],["arg:Politique d’aménagement linguistique (PAL) de l’Ontario","pe:PE20","High"],["arg:Use of Educational Research and Data Analysis","pe:PE4","High"],["arg:Use of Educational Research and Data Analysis","pe:PE7","High"],["arg:Use of Educational Research and Data Analysis","pe:PE10","Medium"],["arg:Use of Educational Research and Data Analysis","pe:PE14","Medium"],["arg:Use of Educational Research and Data Analysis","pe:PE8","High"],["arg:Use of Educational Research and Data Analysis","pe:PE9","High"],["arg:Use of Educational Research and Data Analysis","pe:PE16","Medium"],["arg:Use of Educational Research and Data Analysis","pe:PE22","High"],["arg:Use of Information and Communication Technology as a Teaching and Learning Tool","pe:PE9","Medium"],["arg:Use of Information and Communication Technology as a Teaching and Learning Tool","pe:PE15","High"],["arg:Use of Information and Communication Technology as a Teaching and Learning Tool","pe:PE21","High"],["arg:Use of Information and Communication Technology as a Teaching and Learning Tool","pe:PE8","Medium"],["arg:Use of Information and Communication Technology as a Teaching and Learning Tool","pe:PE18","Medium"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE9","High"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE10","High"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE11","High"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE16","High"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE12","Medium"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE8","High"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE5","Medium"],["arg:Inquiry-based Research, Data and Assessment to Address Student Learning","pe:PE18","High"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE4","High"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE9","Medium"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE14","High"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE5","Medium"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE17","Medium"],["arg:Theories of Learning and Teaching and Differentiated Instruction","pe:PE13","Medium"],["arg:Learning Environment and Organization","pe:PE5","Medium"],["arg:Learning Environment and Organization","pe:PE17","Medium"],["arg:Learning Environment and Organization","pe:PE18","High"],["arg:Learning Environment and Organization","pe:PE10","High"],["arg:Learning Environment and Organization","pe:PE11","High"],["arg:Learning Environment and Organization","pe:PE12","Medium"],["arg:Learning Environment and Organization","pe:PE16","High"],["arg:Learning Environment and Organization","pe:PE22","High"],["arg:Child and Adolescent Development and Student Transitions","pe:PE14","High"],["arg:Child and Adolescent Development and Student Transitions","pe:PE13","High"],["arg:Child and Adolescent Development and Student Transitions","pe:PE5","Medium"],["arg:Child and Adolescent Development and Student Transitions","pe:PE18","High"],["arg:Child and Adolescent Development and Student Transitions","pe:PE7","Low"],["arg:Student Observation, Assessment and Evaluation","pe:PE8","Medium"],["arg:Student Observation, Assessment and Evaluation","pe:PE11","High"],["arg:Student Observation, Assessment and Evaluation","pe:PE16","Medium"],["arg:Supporting English-Language Learners","pe:PE11","High"],["arg:Supporting English-Language Learners","pe:PE20","High"],["arg:Supporting French-Language Learners","pe:PE12","Medium"],["arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","pe:PE2","High"],["arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","pe:PE4","High"],["arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","pe:PE14","High"],["arg:Pedagogy, Assessment and Evaluation for Specific Curriculum Areas","pe:PE1","Medium"],["arg:Supporting Students with Special Education Needs","pe:PE18","High"],["arg:Supporting Students with Special Education Needs","pe:PE1","Medium"],["arg:Supporting Students with Special Education Needs","pe:PE6","Medium"],["arg:Supporting Students with Special Education Needs","pe:PE4","Medium"],["arg:Supporting Students with Special Education Needs","pe:PE15","Medium"],["arg:Mental Health, Well-being and Belonging","pe:PE17","High"],["arg:Mental Health, Well-being and Belonging","pe:PE1","Medium"],["arg:Mental Health, Well-being and Belonging","pe:PE5","High"],["arg:Mental Health, Well-being and Belonging","pe:PE18","High"],["arg:Mental Health, Well-being and Belonging","pe:PE6","High"],["arg:Standards of Practice, Ethical Standards and Education Law","pe:PE6","High"],["arg:Knowledge of the Ontario Context","pe:PE5","High"],["arg:Knowledge of the Ontario Context","pe:PE17","High"],["arg:Knowledge of the Ontario Context","pe:PE11","Medium"],["arg:Knowledge of the Ontario Context","pe:PE18","Medium"],["arg:Knowledge of the Ontario Context","pe:PE12","Medium"],["arg:Knowledge of the Ontario Context","pe:PE20","Medium"],["arg:Indigenous Perspectives, Cultures, Histories and Ways of Knowing","pe:PE3","Medium"],["arg:Indigenous Perspectives, Cultures, Histories and Ways of Knowing","pe:PE13","Medium"],["arg:Environmental Learning, Ecojustice and Climate Action","pe:PE13","High"],["arg:Environmental Learning, Ecojustice and Climate Action","pe:PE18","High"],["arg:Environmental Learning, Ecojustice and Climate Action","pe:PE17","High"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE5","High"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE17","High"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE6","Medium"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE18","Medium"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE12","Medium"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE20","Medium"],["arg:Safe and Accepting Schools/Creation of a Positive School Climate","pe:PE3","Medium"],["arg:Professional Relationships with Colleagues","pe:PE6","Medium"],["arg:Professional Relationships with Colleagues","pe:PE20","High"],["arg:Professional Relationships with Colleagues","pe:PE22","High"],["arg:Professional Relationships with Colleagues","pe:PE12","Medium"],["arg:Professional Relationships with Colleagues","pe:PE21","High"],["arg:Parent/Guardian Engagement and Communication","pe:PE22","Medium"],["arg:Parent/Guardian Engagement and Communication","pe:PE20","High"],["arg:Parent/Guardian Engagement and Communication","pe:PE18","Medium"],["arg:Parent/Guardian Engagement and Communication","pe:PE21","High"]],
+"ePL":[["pe:PE2","lo:1","Medium",false],["pe:PE10","lo:1","Medium",false],["pe:PE16","lo:1","Low",false],["pe:PE11","lo:2","Medium",false],["pe:PE16","lo:2","Medium",false],["pe:PE4","lo:3","Medium",false],["pe:PE9","lo:3","Medium",false],["pe:PE14","lo:3","Medium",false],["pe:PE2","lo:3","Medium",false],["pe:PE5","lo:4","High",false],["pe:PE17","lo:4","Medium",false],["pe:PE18","lo:4","Medium",false],["pe:PE23","lo:4","Low",false],["pe:PE2","lo:5","High",false],["pe:PE1","lo:5","Medium",false],["pe:PE17","lo:6","Medium",false],["pe:PE12","lo:6","Medium",false],["pe:PE13","lo:6","High",true],["pe:PE4","lo:7","Medium",false],["pe:PE14","lo:7","Medium",false],["pe:PE2","lo:7","Medium",false],["pe:PE2","lo:8","Low",false],["pe:PE2","lo:9","High",false],["pe:PE23","lo:9","Medium",false],["pe:PE19","lo:9","Medium",true],["pe:PE2","lo:10","High",false],["pe:PE1","lo:10","Medium",false],["pe:PE16","lo:11","Medium",false],["pe:PE22","lo:11","Medium",false],["pe:PE1","lo:12","High",false],["pe:PE14","lo:12","High",false],["pe:PE2","lo:12","Medium",false],["pe:PE8","lo:12","Medium",true],["pe:PE11","lo:13","Medium",false],["pe:PE17","lo:13","Medium",false],["pe:PE18","lo:13","Medium",false],["pe:PE8","lo:13","Medium",true],["pe:PE2","lo:14","High",false],["pe:PE14","lo:14","Medium",false],["pe:PE17","lo:14","Medium",false],["pe:PE2","lo:15","Medium",false],["pe:PE23","lo:15","Medium",false],["pe:PE19","lo:15","Medium",true],["pe:PE5","lo:16","Medium",false],["pe:PE11","lo:16","Medium",false],["pe:PE18","lo:16","Medium",false],["pe:PE18","lo:17","Medium",false],["pe:PE12","lo:17","Medium",false],["pe:PE2","lo:18","High",false],["pe:PE1","lo:18","Medium",false],["pe:PE15","lo:18","Medium",true],["pe:PE4","lo:19","Medium",false],["pe:PE17","lo:19","Medium",false],["pe:PE22","lo:19","Low",false],["pe:PE1","lo:20","High",false],["pe:PE2","lo:20","High",false],["pe:PE2","lo:21","Medium",false],["pe:PE4","lo:21","Low",false],["pe:PE2","lo:22","High",false],["pe:PE1","lo:22","Medium",false],["pe:PE14","lo:23","Medium",false],["pe:PE18","lo:23","Medium",false],["pe:PE1","lo:23","Medium",false],["pe:PE1","lo:24","Medium",false],["pe:PE2","lo:24","Medium",false],["pe:PE2","lo:25","High",false],["pe:PE1","lo:25","Medium",false],["pe:PE17","lo:26","Medium",false]]};
+
+const colLaw = document.getElementById('col-law');
+const colArg = document.getElementById('col-arg');
+const colPe = document.getElementById('col-pe');
+const colLo = document.getElementById('col-lo');
+
+const lawOrder = Object.keys(D.laws).sort((a,b)=>{
+  const A=D.laws[a], B=D.laws[b];
+  const catOrder = {CK:0,PISK:1,TCK:2};
+  if(catOrder[A.cat]!==catOrder[B.cat]) return catOrder[A.cat]-catOrder[B.cat];
+  return parseInt(A.elem.split(' ')[1])-parseInt(B.elem.split(' ')[1]);
+});
+const argOrder = Object.keys(D.args).sort((a,b)=>parseInt(D.args[a].pages[0])-parseInt(D.args[b].pages[0]));
+const peOrder = Object.keys(D.pes).sort((a,b)=>parseInt(D.pes[a].pe.slice(2))-parseInt(D.pes[b].pe.slice(2)));
+const loOrder = Object.keys(D.los).sort((a,b)=>parseInt(D.los[a].lon)-parseInt(D.los[b].lon));
+
+function mkNode(id, cls, html){
+  const div = document.createElement('div');
+  div.className = 'node ' + cls;
+  div.id = id;
+  div.innerHTML = html;
+  return div;
+}
+
+lawOrder.forEach(id=>{
+  const n = D.laws[id];
+  colLaw.appendChild(mkNode(id, 'leg', `<span class="tag">${n.cat} ${n.elem}</span>`));
+});
+argOrder.forEach(id=>{
+  const n = D.args[id];
+  colArg.appendChild(mkNode(id, 'arg', `<span class="tag">ARG p.${n.pages.join(',')}</span>${n.sec}`));
+});
+peOrder.forEach(id=>{
+  const n = D.pes[id];
+  colPe.appendChild(mkNode(id, 'pe', `<span class="tag">${n.pe}</span>${n.peText}`));
+});
+loOrder.forEach(id=>{
+  const n = D.los[id];
+  colLo.appendChild(mkNode(id, 'lo', `<span class="tag">LO ${n.lon}</span>${n.lo}`));
+});
+
+const svg = document.getElementById('svglinks');
+const wrap = document.querySelector('.flow-wrap');
+const confCls = c => c==='High' ? 'strong' : '';
+
+const allEdges = [
+  ...D.eLA.map(([a,b,c])=>({a,b,c,u:false})),
+  ...D.eAP.map(([a,b,c])=>({a,b,c,u:false})),
+  ...D.ePL.map(([a,b,c,u])=>({a,b,c,u}))
+];
+
+function drawLinks(){
+  const wrapRect = wrap.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${wrapRect.width} ${wrapRect.height}`);
+  svg.innerHTML = '';
+  allEdges.forEach(e=>{
+    const elA = document.getElementById(e.a);
+    const elB = document.getElementById(e.b);
+    if(!elA || !elB) return;
+    const rA = elA.getBoundingClientRect(), rB = elB.getBoundingClientRect();
+    const x1 = rA.right - wrapRect.left, y1 = rA.top + rA.height/2 - wrapRect.top;
+    const x2 = rB.left - wrapRect.left, y2 = rB.top + rB.height/2 - wrapRect.top;
+    const mx = (x1+x2)/2;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+    path.setAttribute('class', confCls(e.c) + (e.u ? ' unintended' : ''));
+    path.dataset.a = e.a; path.dataset.b = e.b;
+    svg.appendChild(path);
+  });
+}
+window.addEventListener('load', ()=>setTimeout(drawLinks, 50));
+window.addEventListener('resize', drawLinks);
+
+function neighborsOf(id){
+  const out = new Set();
+  allEdges.forEach(e=>{
+    if(e.a===id) out.add(e.b);
+    if(e.b===id) out.add(e.a);
+  });
+  return out;
+}
+
+function highlightSet(startId){
+  let frontier = new Set([startId]);
+  const nodes = new Set([startId]);
+  for(let hop=0; hop<3; hop++){
+    let next = new Set();
+    frontier.forEach(id=>{ neighborsOf(id).forEach(n=>{ if(!nodes.has(n)){ next.add(n); nodes.add(n); } }); });
+    frontier = next;
+  }
+  const edges = new Set();
+  allEdges.forEach(e=>{ if(nodes.has(e.a) && nodes.has(e.b)) edges.add(e.a+'|'+e.b); });
+  return {nodes, edges};
+}
+
+function applyHighlight(nodes, edges, activeId){
+  document.querySelectorAll('.node').forEach(n=>{
+    n.classList.toggle('dim', !nodes.has(n.id));
+    n.classList.toggle('hi', n.id===activeId);
+  });
+  document.querySelectorAll('svg.links path').forEach(p=>{
+    const key = p.dataset.a+'|'+p.dataset.b;
+    p.classList.toggle('dim', !edges.has(key));
+    p.classList.toggle('hi', edges.has(key));
+  });
+}
+
+function clearHighlight(){
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('dim','hi'));
+  document.querySelectorAll('svg.links path').forEach(p=>p.classList.remove('dim','hi'));
+}
+
+document.querySelectorAll('.node').forEach(n=>{
+  n.addEventListener('mouseenter', ()=>{
+    const {nodes, edges} = highlightSet(n.id);
+    applyHighlight(nodes, edges, n.id);
+  });
+  n.addEventListener('mouseleave', clearHighlight);
+});
+
+const qInput = document.getElementById('q');
+qInput.addEventListener('input', ()=>{
+  const q = qInput.value.trim().toLowerCase();
+  if(!q){ clearHighlight(); return; }
+  const matched = new Set();
+  document.querySelectorAll('.node').forEach(n=>{
+    if(n.textContent.toLowerCase().indexOf(q) !== -1) matched.add(n.id);
+  });
+  let allNodes = new Set();
+  let allEdgesKeys = new Set();
+  matched.forEach(id=>{
+    const {nodes, edges} = highlightSet(id);
+    nodes.forEach(x=>allNodes.add(x));
+    edges.forEach(x=>allEdgesKeys.add(x));
+  });
+  document.querySelectorAll('.node').forEach(n=>{
+    n.classList.toggle('dim', !allNodes.has(n.id));
+    n.classList.toggle('hi', matched.has(n.id));
+  });
+  document.querySelectorAll('svg.links path').forEach(p=>{
+    const key = p.dataset.a+'|'+p.dataset.b;
+    p.classList.toggle('dim', !allEdgesKeys.has(key));
+    p.classList.toggle('hi', allEdgesKeys.has(key));
+  });
+});
+</script>
+
+</body>
+</html>
